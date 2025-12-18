@@ -60,9 +60,9 @@
             <scope>test</scope>
         </dependency>
 		<dependency>
-			<groupId>com.mysql</groupId>
+			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
-			<version>8.0.33</version>
+			<scope>runtime</scope>
 		</dependency>
 		<!-- Explicit Spring Security Crypto -->
 		<dependency>
