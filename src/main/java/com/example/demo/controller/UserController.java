@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.User;
@@ -11,24 +10,16 @@ import com.example.demo.service.UserService;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @PostMapping("/register")
+    public User register(@RequestBody User user) {
+        return userService.register(user);
     }
 
-    @PostMapping("/")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
-
-    @GetMapping("/")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/email/{email}")
+    public User getByEmail(@PathVariable String email) {
+        return userService.findByEmail(email);
     }
 }
