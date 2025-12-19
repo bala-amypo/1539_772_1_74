@@ -1,10 +1,9 @@
 package com.example.demo.model;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "policies", uniqueConstraints = {
@@ -19,7 +18,6 @@ public class Policy {
     // 🔗 Policy → User
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @NotNull(message = "User is required")
     private User user;
 
     @NotBlank(message = "Policy number is required")
@@ -54,47 +52,43 @@ public class Policy {
     public Long getId() {
         return id;
     }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
- 
+
     public User getUser() {
         return user;
     }
- 
+
     public void setUser(User user) {
         this.user = user;
     }
- 
+
     public String getPolicyNumber() {
         return policyNumber;
     }
- 
+
     public void setPolicyNumber(String policyNumber) {
         this.policyNumber = policyNumber;
     }
- 
+
     public String getPolicyType() {
         return policyType;
     }
- 
+
     public void setPolicyType(String policyType) {
         this.policyType = policyType;
     }
- 
+
     public LocalDate getStartDate() {
         return startDate;
     }
- 
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
- 
+
     public LocalDate getEndDate() {
         return endDate;
     }
- 
+
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
