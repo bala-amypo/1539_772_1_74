@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import com.example.demo.security.JwtUtil;
 
 import jakarta.validation.Valid;
 
@@ -19,38 +18,36 @@ public class AuthController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
     public AuthController(UserService userService,
-                          PasswordEncoder passwordEncoder,
-                          JwtUtil jwtUtil) {
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
     }
 
-    // ✅ REGISTER
+    // ✅ REGISTER USER
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
+    public ResponseEntity<User> register(
+            @Valid @RequestBody User user) {
 
         User createdUser = userService.registerUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
-    // ✅ LOGIN
+    // ✅ LOGIN USER (NO JWT)
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody User request) {
+    public ResponseEntity<Map<String, String>> login(
+            @RequestBody User request) {
 
         User user = userService.findByEmail(request.getEmail());
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(
+                request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
-
         Map<String, String> response = new HashMap<>();
-        response.put("token", token);
+        response.put("message", "Login successful");
 
         return ResponseEntity.ok(response);
     }
