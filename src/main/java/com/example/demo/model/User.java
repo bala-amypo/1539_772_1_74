@@ -28,7 +28,6 @@ public class User {
 
     private String role = "USER";
 
-    // 🔗 User → Policies
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Policy> policies;
 
