@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import com.example.demo.model.FraudRule;
 import com.example.demo.service.FraudRuleService;
 
