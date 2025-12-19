@@ -31,7 +31,7 @@ public class Claim {
 
     private String status = "PENDING";
 
-    // 🔗 Claim ↔ FraudRule (Many-to-Many)
+    // 🔗 Claim ↔ FraudRule
     @ManyToMany
     @JoinTable(
             name = "claim_fraud_rules",
@@ -40,7 +40,6 @@ public class Claim {
     )
     private Set<FraudRule> fraudRules;
 
-    // 🔗 Claim → FraudCheckResult (One-to-One)
     @OneToOne(mappedBy = "claim", cascade = CascadeType.ALL)
     private FraudCheckResult fraudCheckResult;
 
@@ -93,5 +92,10 @@ public class Claim {
 
     public String getStatus() {
         return status;
+    }
+
+    // ✅ THIS FIXES YOUR COMPILATION ERROR
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
