@@ -18,7 +18,7 @@ public class PolicyController {
     }
 
     @PostMapping("/")
-    public Policy createPolicy(@RequestBody Policy policy) {
+    public Policy createPolicy(@Valid @RequestBody Policy policy) {
         return policyService.createPolicy(policy);
     }
 

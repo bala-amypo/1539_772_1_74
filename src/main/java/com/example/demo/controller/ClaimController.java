@@ -18,7 +18,7 @@ public class ClaimController {
     }
 
     @PostMapping("/")
-    public Claim createClaim(@RequestBody Claim claim) {
+    public Claim createClaim(@Valid @RequestBody Claim claim) {
         return claimService.createClaim(claim);
     }
 

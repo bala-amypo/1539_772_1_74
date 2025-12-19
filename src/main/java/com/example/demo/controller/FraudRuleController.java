@@ -18,7 +18,7 @@ public class FraudRuleController {
     }
 
     @PostMapping("/")
-    public FraudRule addRule(@RequestBody FraudRule rule) {
+    public FraudRule addRule(@Valid @RequestBody FraudRule rule) {
         return fraudRuleService.addRule(rule);
     }
 
