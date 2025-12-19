@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 import com.example.demo.model.FraudCheckResult;
 import com.example.demo.service.FraudDetectionService;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/fraud-check")
@@ -15,13 +16,19 @@ public class FraudDetectionController {
         this.fraudDetectionService = fraudDetectionService;
     }
 
-    @GetMapping("/evaluate/{claimId}")
-    public FraudCheckResult evaluateClaim(@PathVariable Long claimId) {
-        return fraudDetectionService.evaluateClaim(claimId);
+    // ✅ EVALUATE CLAIM
+    @PostMapping("/evaluate/{claimId}")
+    public ResponseEntity<FraudCheckResult> evaluateClaim(@PathVariable Long claimId) {
+        return ResponseEntity.ok(
+                fraudDetectionService.evaluateClaim(claimId)
+        );
     }
 
+    // ✅ GET FRAUD RESULT BY CLAIM
     @GetMapping("/result/claim/{claimId}")
-    public FraudCheckResult getResultByClaim(@PathVariable Long claimId) {
-        return fraudDetectionService.getResultByClaim(claimId);
+    public ResponseEntity<FraudCheckResult> getResultByClaim(@PathVariable Long claimId) {
+        return ResponseEntity.ok(
+                fraudDetectionService.getResultByClaim(claimId)
+        );
     }
 }
