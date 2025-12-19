@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "fraud_rules", uniqueConstraints = {
@@ -12,19 +13,20 @@ public class FraudRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Rule name is required")
     @Column(nullable = false, unique = true)
     private String ruleName;
 
-    // example: "claimAmount"
+    @NotBlank(message = "Condition field is required")
     private String conditionField;
 
-    // >, <, =, >=, <=
+    @NotBlank(message = "Operator is required")
     private String operator;
 
-    // value stored as String for flexibility
+    @NotBlank(message = "Value is required")
     private String value;
 
-    // LOW / MEDIUM / HIGH
+    @NotBlank(message = "Severity is required")
     private String severity;
 
     public FraudRule() {
@@ -39,8 +41,6 @@ public class FraudRule {
         this.severity = severity;
     }
 
-    // -------- Getters & Setters --------
-
     public Long getId() {
         return id;
     }
@@ -48,7 +48,7 @@ public class FraudRule {
     public void setId(Long id) {
         this.id = id;
     }
-
+ 
     public String getRuleName() {
         return ruleName;
     }

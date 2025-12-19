@@ -3,6 +3,7 @@ package com.example.demo.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "fraud_check_results")
@@ -12,10 +13,13 @@ public class FraudCheckResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 🔗 One Claim → One Fraud Result
     @OneToOne
     @JoinColumn(name = "claim_id", nullable = false)
+    @NotNull(message = "Claim is required")
     private Claim claim;
 
+    @NotNull
     private Boolean isFraudulent;
 
     private String triggeredRuleName;
@@ -32,8 +36,6 @@ public class FraudCheckResult {
         this.checkedAt = LocalDateTime.now();
     }
 
-    // -------- Getters & Setters --------
-
     public Long getId() {
         return id;
     }
@@ -41,7 +43,7 @@ public class FraudCheckResult {
     public void setId(Long id) {
         this.id = id;
     }
-
+ 
     public Claim getClaim() {
         return claim;
     }
