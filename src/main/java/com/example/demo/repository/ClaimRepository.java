@@ -1,10 +1,9 @@
 package com.example.demo.repository;
 
-import java.util.List;
-
+import com.example.demo.model.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.model.Claim;
+import java.util.List;
 
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
 

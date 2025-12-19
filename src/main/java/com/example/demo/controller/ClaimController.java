@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 import com.example.demo.model.Claim;
 import com.example.demo.service.ClaimService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/claims")
@@ -17,18 +20,30 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-    @PostMapping("/")
-    public Claim createClaim(@Valid @RequestBody Claim claim) {
-        return claimService.createClaim(claim);
+    // ✅ CREATE CLAIM
+    @PostMapping("/{policyId}")
+    public ResponseEntity<Claim> createClaim(
+            @PathVariable Long policyId,
+            @Valid @RequestBody Claim claim) {
+
+        return ResponseEntity.ok(
+                claimService.createClaim(policyId, claim)
+        );
     }
 
+    // ✅ GET CLAIM BY ID
     @GetMapping("/{id}")
-    public Claim getClaim(@PathVariable Long id) {
-        return claimService.getClaim(id);
+    public ResponseEntity<Claim> getClaim(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                claimService.getClaim(id)
+        );
     }
 
-    @GetMapping("/")
-    public List<Claim> getAllClaims() {
-        return claimService.getAllClaims();
+    // ✅ GET ALL CLAIMS (ADMIN VIEW)
+    @GetMapping
+    public ResponseEntity<List<Claim>> getAllClaims() {
+        return ResponseEntity.ok(
+                claimService.getAllClaims()
+        );
     }
 }
