@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.util.List;
@@ -22,6 +24,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
@@ -29,18 +32,21 @@ public class User {
     private String role = "USER";
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Policy> policies;
-
-    public User() {
-    }
-
+    public User() {}
     public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
     }
-
+    @PrePersist
+    public void setDefaultRole() {
+        if (this.role == null || this.role.isBlank()) {
+            this.role = "USER";
+        }
+    }
     public Long getId() {
         return id;
     }
@@ -79,5 +85,13 @@ public class User {
  
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Policy> getPolicies() {
+        return policies;
+    }
+
+    public void setPolicies(List<Policy> policies) {
+        this.policies = policies;
     }
 }
