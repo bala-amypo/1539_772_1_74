@@ -1,13 +1,3 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.FraudRule;
-import com.example.demo.repository.FraudRuleRepository;
-import com.example.demo.service.FraudRuleService;
-
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class FraudRuleServiceImpl implements FraudRuleService {
 
@@ -22,7 +12,8 @@ public class FraudRuleServiceImpl implements FraudRuleService {
 
         fraudRuleRepository.findByRuleName(rule.getRuleName())
                 .ifPresent(existing -> {
-                    throw new IllegalArgumentException("Invalid or duplicate rule name");
+                    throw new IllegalArgumentException(
+                        "Invalid or duplicate rule name");
                 });
 
         if (!rule.getSeverity().equals("LOW") &&
@@ -36,6 +27,12 @@ public class FraudRuleServiceImpl implements FraudRuleService {
 
     @Override
     public List<FraudRule> getAllRules() {
-        return fraudRuleRepository.findAll();
+        List<FraudRule> rules = fraudRuleRepository.findAll();
+
+        if (rules.isEmpty()) {
+            throw new ResourceNotFoundException("Fraud rule not found");
+        }
+
+        return rules;
     }
 }
