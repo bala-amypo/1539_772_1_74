@@ -1,96 +1,56 @@
-package com.example.demo.service.impl;
+@Override
+public FraudCheckResult evaluateClaim(Long claimId) {
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
-import com.example.demo.service.FraudDetectionService;
-import com.example.demo.exception.ResourceNotFoundException;
+    Claim claim = claimRepository.findById(claimId)
+            .orElseThrow(() -> new ResourceNotFoundException("Claim not found"));
 
-import org.springframework.stereotype.Service;
+    List<FraudRule> rules = fraudRuleRepository.findAll();
 
-import java.time.LocalDateTime;
-import java.util.List;
+    boolean isFraud = false;
+    String triggeredRuleName = null;
+    String reason = null;
 
-@Service
-public class FraudDetectionServiceImpl implements FraudDetectionService {
+    for (FraudRule rule : rules) {
 
-    private final ClaimRepository claimRepository;
-    private final FraudRuleRepository fraudRuleRepository;
-    private final FraudCheckResultRepository resultRepository;
+        if ("claimAmount".equals(rule.getConditionField())) {
 
-    public FraudDetectionServiceImpl(ClaimRepository claimRepository,
-                                     FraudRuleRepository fraudRuleRepository,
-                                     FraudCheckResultRepository resultRepository) {
-        this.claimRepository = claimRepository;
-        this.fraudRuleRepository = fraudRuleRepository;
-        this.resultRepository = resultRepository;
-    }
+            double threshold = Double.parseDouble(rule.getValue());
 
-    @Override
-    public FraudCheckResult evaluateClaim(Long claimId) {
+            boolean matched = false;
 
-        Claim claim = claimRepository.findById(claimId)
-                .orElseThrow(() -> new ResourceNotFoundException("Claim not found"));
+            switch (rule.getOperator()) {
+                case ">":  matched = claim.getClaimAmount() > threshold; break;
+                case "<":  matched = claim.getClaimAmount() < threshold; break;
+                case ">=": matched = claim.getClaimAmount() >= threshold; break;
+                case "<=": matched = claim.getClaimAmount() <= threshold; break;
+                case "=":  matched = claim.getClaimAmount().doubleValue() == threshold; break;
+            }
 
-        List<FraudRule> rules = fraudRuleRepository.findAll();
+            if (matched) {
+                isFraud = true;
+                triggeredRuleName = rule.getRuleName();
+                reason = "Claim amount triggered fraud threshold: "
+                        + rule.getOperator() + " " + threshold;
 
-        boolean isFraud = false;
-        String triggeredRuleName = null;
-        String reason = null;
+                // 🔥 ADD RULE TO CLAIM
+                claim.getSuspectedRules().add(rule);
 
-        for (FraudRule rule : rules) {
-            // Simple example: only checking claimAmount
-            if ("claimAmount".equals(rule.getConditionField())) {
-                double threshold = Double.parseDouble(rule.getValue());
-                switch (rule.getOperator()) {
-                    case ">":
-                        if (claim.getClaimAmount() > threshold) {
-                            isFraud = true;
-                        }
-                        break;
-                    case "<":
-                        if (claim.getClaimAmount() < threshold) {
-                            isFraud = true;
-                        }
-                        break;
-                    case ">=":
-                        if (claim.getClaimAmount() >= threshold) {
-                            isFraud = true;
-                        }
-                        break;
-                    case "<=":
-                        if (claim.getClaimAmount() <= threshold) {
-                            isFraud = true;
-                        }
-                        break;
-                    case "=":
-                        if (claim.getClaimAmount().equals(threshold)) {
-                            isFraud = true;
-                        }
-                        break;
-                }
-
-                if (isFraud) {
-                    triggeredRuleName = rule.getRuleName();
-                    reason = "Claim amount triggered fraud threshold: " + rule.getOperator() + " " + threshold;
-                    break;
-                }
+                break;
             }
         }
-
-        FraudCheckResult result = new FraudCheckResult(
-                claim,
-                isFraud,
-                triggeredRuleName,
-                reason,
-                LocalDateTime.now()
-        );
-
-        return resultRepository.save(result);
     }
 
-    @Override
-    public FraudCheckResult getResultByClaim(Long claimId) {
-        return resultRepository.findByClaimId(claimId)
-                .orElseThrow(() -> new ResourceNotFoundException("Result not found"));
-    }
+    // 🔥 UPDATE CLAIM STATUS
+    claim.setStatus(isFraud ? "REJECTED" : "APPROVED");
+    claimRepository.save(claim);
+
+    FraudCheckResult result = new FraudCheckResult(
+            claim,
+            isFraud,
+            triggeredRuleName,
+            reason,
+            LocalDateTime.now()
+    );
+
+    return resultRepository.save(result);
 }
