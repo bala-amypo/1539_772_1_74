@@ -38,36 +38,44 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
         String reason = null;
 
         for (FraudRule rule : rules) {
-
+            // Simple example: only checking claimAmount
             if ("claimAmount".equals(rule.getConditionField())) {
-
                 double threshold = Double.parseDouble(rule.getValue());
-                boolean matched = false;
-
                 switch (rule.getOperator()) {
-                    case ">":  matched = claim.getClaimAmount() > threshold; break;
-                    case "<":  matched = claim.getClaimAmount() < threshold; break;
-                    case ">=": matched = claim.getClaimAmount() >= threshold; break;
-                    case "<=": matched = claim.getClaimAmount() <= threshold; break;
-                    case "=":  matched = claim.getClaimAmount().doubleValue() == threshold; break;
+                    case ">":
+                        if (claim.getClaimAmount() > threshold) {
+                            isFraud = true;
+                        }
+                        break;
+                    case "<":
+                        if (claim.getClaimAmount() < threshold) {
+                            isFraud = true;
+                        }
+                        break;
+                    case ">=":
+                        if (claim.getClaimAmount() >= threshold) {
+                            isFraud = true;
+                        }
+                        break;
+                    case "<=":
+                        if (claim.getClaimAmount() <= threshold) {
+                            isFraud = true;
+                        }
+                        break;
+                    case "=":
+                        if (claim.getClaimAmount().equals(threshold)) {
+                            isFraud = true;
+                        }
+                        break;
                 }
 
-                if (matched) {
-                    isFraud = true;
+                if (isFraud) {
                     triggeredRuleName = rule.getRuleName();
-                    reason = "Claim amount triggered fraud threshold: "
-                            + rule.getOperator() + " " + threshold;
-
-                    // ✅ ADD RULE TO CLAIM
-                    claim.getSuspectedRules().add(rule);
+                    reason = "Claim amount triggered fraud threshold: " + rule.getOperator() + " " + threshold;
                     break;
                 }
             }
         }
-
-        // ✅ UPDATE CLAIM STATUS
-        claim.setStatus(isFraud ? "REJECTED" : "APPROVED");
-        claimRepository.save(claim);
 
         FraudCheckResult result = new FraudCheckResult(
                 claim,
