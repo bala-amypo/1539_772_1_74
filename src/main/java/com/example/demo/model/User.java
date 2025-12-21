@@ -3,7 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.util.List;
-import com.
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -25,7 +25,7 @@ public class User {
 
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
-    @json
+    @JsonIgnore
     private String password;
 
     private String role = "USER";
