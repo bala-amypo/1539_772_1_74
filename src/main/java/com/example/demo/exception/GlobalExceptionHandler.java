@@ -1,17 +1,13 @@
 package com.example.demo.exception;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
 import java.time.LocalDateTime;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    // 🔴 404 - Resource not found
+    //404 - Resource not found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleNotFound(
             ResourceNotFoundException ex, WebRequest request) {
@@ -22,7 +18,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 🟠 400 - Validation / business errors
+    //400 - Validation / business errors
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalArgument(
             IllegalArgumentException ex, WebRequest request) {
@@ -33,7 +29,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 🟠 400 - Bean validation errors (@Valid)
+    //400 - Bean validation errors (@Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationErrors(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -60,7 +56,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // ✅ INNER RESPONSE CLASS (NO EXTRA FILE)
+    // INNER RESPONSE CLASS (NO EXTRA FILE)
     static class ApiErrorResponse {
 
         private LocalDateTime timestamp;
