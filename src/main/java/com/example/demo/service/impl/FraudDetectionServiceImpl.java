@@ -28,55 +28,65 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
     @Override
     public FraudCheckResult evaluateClaim(Long claimId) {
 
+        // 1️⃣ Load claim
         Claim claim = claimRepository.findById(claimId)
                 .orElseThrow(() -> new ResourceNotFoundException("Claim not found"));
 
+        // 2️⃣ Load all rules
         List<FraudRule> rules = fraudRuleRepository.findAll();
 
         boolean isFraud = false;
         String triggeredRuleName = null;
         String reason = null;
 
+        // 3️⃣ Evaluate rules
         for (FraudRule rule : rules) {
-            // Simple example: only checking claimAmount
+
             if ("claimAmount".equals(rule.getConditionField())) {
+
                 double threshold = Double.parseDouble(rule.getValue());
+                double amount = claim.getClaimAmount();
+
+                boolean ruleMatched = false;
+
                 switch (rule.getOperator()) {
                     case ">":
-                        if (claim.getClaimAmount() > threshold) {
-                            isFraud = true;
-                        }
+                        ruleMatched = amount > threshold;
                         break;
                     case "<":
-                        if (claim.getClaimAmount() < threshold) {
-                            isFraud = true;
-                        }
+                        ruleMatched = amount < threshold;
                         break;
                     case ">=":
-                        if (claim.getClaimAmount() >= threshold) {
-                            isFraud = true;
-                        }
+                        ruleMatched = amount >= threshold;
                         break;
                     case "<=":
-                        if (claim.getClaimAmount() <= threshold) {
-                            isFraud = true;
-                        }
+                        ruleMatched = amount <= threshold;
                         break;
                     case "=":
-                        if (claim.getClaimAmount().equals(threshold)) {
-                            isFraud = true;
-                        }
+                        ruleMatched = amount == threshold;
                         break;
                 }
 
-                if (isFraud) {
+                if (ruleMatched) {
+                    isFraud = true;
                     triggeredRuleName = rule.getRuleName();
-                    reason = "Claim amount triggered fraud threshold: " + rule.getOperator() + " " + threshold;
+                    reason = "Claim rejected due to rule: " + rule.getRuleName();
                     break;
                 }
             }
         }
 
+        // 🔥 4️⃣ UPDATE CLAIM STATUS (THIS WAS MISSING)
+        if (isFraud) {
+            claim.setStatus("REJECTED");
+        } else {
+            claim.setStatus("APPROVED");
+        }
+
+        // 🔥 5️⃣ SAVE UPDATED CLAIM
+        claimRepository.save(claim);
+
+        // 6️⃣ Create fraud result
         FraudCheckResult result = new FraudCheckResult(
                 claim,
                 isFraud,
