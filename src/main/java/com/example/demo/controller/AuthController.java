@@ -25,7 +25,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ REGISTER USER
+    // REGISTER USER
     @PostMapping("/register")
     public ResponseEntity<User> register(
             @Valid @RequestBody User user) {
@@ -34,7 +34,7 @@ public class AuthController {
         return ResponseEntity.ok(createdUser);
     }
 
-    // ✅ LOGIN USER (NO JWT)
+    // LOGIN USER (NO JWT)
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(
             @RequestBody User request) {

@@ -20,7 +20,7 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-    // ✅ CREATE CLAIM
+    //CREATE CLAIM
     @PostMapping("/{policyId}")
     public ResponseEntity<Claim> createClaim(
             @PathVariable Long policyId,
@@ -31,7 +31,7 @@ public class ClaimController {
         );
     }
 
-    // ✅ GET CLAIM BY ID
+    //GET CLAIM BY ID
     @GetMapping("/{id}")
     public ResponseEntity<Claim> getClaim(@PathVariable Long id) {
         return ResponseEntity.ok(
@@ -39,7 +39,7 @@ public class ClaimController {
         );
     }
 
-    // ✅ GET ALL CLAIMS (ADMIN VIEW)
+    //GET ALL CLAIMS (ADMIN VIEW)
     @GetMapping
     public ResponseEntity<List<Claim>> getAllClaims() {
         return ResponseEntity.ok(

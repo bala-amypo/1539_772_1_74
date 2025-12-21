@@ -15,16 +15,14 @@ public class FraudDetectionController {
     public FraudDetectionController(FraudDetectionService fraudDetectionService) {
         this.fraudDetectionService = fraudDetectionService;
     }
-
-    // ✅ EVALUATE CLAIM
+    //EVALUATE CLAIM
     @PostMapping("/evaluate/{claimId}")
     public ResponseEntity<FraudCheckResult> evaluateClaim(@PathVariable Long claimId) {
         return ResponseEntity.ok(
                 fraudDetectionService.evaluateClaim(claimId)
         );
     }
-
-    // ✅ GET FRAUD RESULT BY CLAIM
+    //GET FRAUD RESULT BY CLAIM
     @GetMapping("/result/claim/{claimId}")
     public ResponseEntity<FraudCheckResult> getResultByClaim(@PathVariable Long claimId) {
         return ResponseEntity.ok(
