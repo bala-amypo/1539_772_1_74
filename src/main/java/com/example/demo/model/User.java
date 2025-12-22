@@ -25,7 +25,6 @@ public class User {
 
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
-    @JsonIgnore
     private String password;
 
     private String role = "USER";
