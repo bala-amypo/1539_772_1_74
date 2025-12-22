@@ -31,7 +31,6 @@ public class FraudRule {
     @NotBlank(message = "Severity is required")
     private String severity;
 
-    // 🔗 FraudRule ↔ Claim (inverse side)
     @ManyToMany(mappedBy = "fraudRules")
     private Set<Claim> claims;
 

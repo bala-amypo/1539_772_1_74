@@ -15,7 +15,6 @@ public class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔗 Policy → User
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -33,7 +32,6 @@ public class Policy {
     @NotNull(message = "End date is required")
     private LocalDate endDate;
 
-    // 🔗 Policy → Claims
     @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
     private List<Claim> claims;
 

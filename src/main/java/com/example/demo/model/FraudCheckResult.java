@@ -10,8 +10,6 @@ public class FraudCheckResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // 🔗 Result → Claim
     @OneToOne
     @JoinColumn(name = "claim_id", nullable = false)
     private Claim claim;

@@ -14,7 +14,6 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔗 Claim → Policy
     @ManyToOne
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
@@ -30,8 +29,6 @@ public class Claim {
     private String description;
 
     private String status = "PENDING";
-
-    // 🔗 Claim ↔ FraudRule
     @ManyToMany
     @JoinTable(
             name = "claim_fraud_rules",
@@ -93,8 +90,6 @@ public class Claim {
     public String getStatus() {
         return status;
     }
-
-    // ✅ THIS FIXES YOUR COMPILATION ERROR
     public void setStatus(String status) {
         this.status = status;
     }

@@ -7,7 +7,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    //404 - Resource not found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleNotFound(
             ResourceNotFoundException ex, WebRequest request) {
@@ -17,8 +16,6 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND
         );
     }
-
-    //400 - Validation / business errors
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalArgument(
             IllegalArgumentException ex, WebRequest request) {
@@ -28,8 +25,6 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
-
-    //400 - Bean validation errors (@Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationErrors(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -45,7 +40,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // ⚫ 500 - Any other error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGlobal(
             Exception ex, WebRequest request) {
@@ -55,8 +49,6 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-
-    // INNER RESPONSE CLASS (NO EXTRA FILE)
     static class ApiErrorResponse {
 
         private LocalDateTime timestamp;
