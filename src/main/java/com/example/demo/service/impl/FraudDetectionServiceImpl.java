@@ -28,18 +28,15 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
     @Override
     public FraudCheckResult evaluateClaim(Long claimId) {
 
-        // 1️⃣ Load claim
         Claim claim = claimRepository.findById(claimId)
                 .orElseThrow(() -> new ResourceNotFoundException("Claim not found"));
 
-        // 2️⃣ Load all rules
         List<FraudRule> rules = fraudRuleRepository.findAll();
 
         boolean isFraud = false;
         String triggeredRuleName = null;
         String reason = null;
 
-        // 3️⃣ Evaluate rules
         for (FraudRule rule : rules) {
 
             if ("claimAmount".equals(rule.getConditionField())) {
@@ -75,18 +72,14 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
                 }
             }
         }
-
-        // 🔥 4️⃣ UPDATE CLAIM STATUS (THIS WAS MISSING)
         if (isFraud) {
             claim.setStatus("REJECTED");
         } else {
             claim.setStatus("APPROVED");
         }
 
-        // 🔥 5️⃣ SAVE UPDATED CLAIM
         claimRepository.save(claim);
 
-        // 6️⃣ Create fraud result
         FraudCheckResult result = new FraudCheckResult(
                 claim,
                 isFraud,

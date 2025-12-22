@@ -15,7 +15,6 @@ public class FraudRuleController {
         this.fraudRuleService = fraudRuleService;
     }
 
-    // ADD FRAUD RULE
     @PostMapping
     public ResponseEntity<FraudRule> addRule(
             @Valid @RequestBody FraudRule rule) {
@@ -25,7 +24,6 @@ public class FraudRuleController {
         );
     }
 
-    //GET ALL FRAUD RULES
     @GetMapping
     public ResponseEntity<List<FraudRule>> getAllRules() {
 

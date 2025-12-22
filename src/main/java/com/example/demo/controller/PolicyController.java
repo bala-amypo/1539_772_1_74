@@ -15,7 +15,6 @@ public class PolicyController {
         this.policyService = policyService;
     }
 
-    //CREATE POLICY
     @PostMapping("/{userId}")
     public ResponseEntity<Policy> createPolicy(
             @PathVariable Long userId,
@@ -25,7 +24,6 @@ public class PolicyController {
                 policyService.createPolicy(userId, policy)
         );
     }
-    // GET POLICIES BY USER
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Policy>> getPoliciesByUser(
             @PathVariable Long userId) {

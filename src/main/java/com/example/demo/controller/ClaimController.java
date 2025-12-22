@@ -28,16 +28,12 @@ public class ClaimController {
                 claimService.createClaim(policyId, claim)
         );
     }
-
-    //GET CLAIM BY ID
     @GetMapping("/{id}")
     public ResponseEntity<Claim> getClaim(@PathVariable Long id) {
         return ResponseEntity.ok(
                 claimService.getClaim(id)
         );
     }
-
-    //GET ALL CLAIMS (ADMIN VIEW)
     @GetMapping
     public ResponseEntity<List<Claim>> getAllClaims() {
         return ResponseEntity.ok(
