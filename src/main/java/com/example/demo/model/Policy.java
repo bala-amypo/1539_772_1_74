@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.fasterxml.
 
 @Entity
 @Table(name = "policies", uniqueConstraints = {
@@ -33,6 +34,7 @@ public class Policy {
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Claim> claims;
 
     public Policy() {
