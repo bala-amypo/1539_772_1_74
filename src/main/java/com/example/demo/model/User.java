@@ -30,6 +30,7 @@ public class User {
     private String role = "USER";
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore;
     private List<Policy> policies;
 
     public User() {
