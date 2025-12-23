@@ -1,5 +1,5 @@
 package com.example.demo.model;
-
+import com.fastexml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

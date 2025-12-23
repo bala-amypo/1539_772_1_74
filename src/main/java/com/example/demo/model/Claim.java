@@ -1,5 +1,5 @@
 package com.example.demo.model;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -30,6 +30,7 @@ public class Claim {
 
     private String status = "PENDING";
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "claim_fraud_rules",
             joinColumns = @JoinColumn(name = "claim_id"),
@@ -38,6 +39,7 @@ public class Claim {
     private Set<FraudRule> fraudRules;
 
     @OneToOne(mappedBy = "claim", cascade = CascadeType.ALL)
+    @JsonIgnore
     private FraudCheckResult fraudCheckResult;
 
     public Claim() {
