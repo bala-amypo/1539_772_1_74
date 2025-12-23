@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.fasterxml.
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "policies", uniqueConstraints = {
