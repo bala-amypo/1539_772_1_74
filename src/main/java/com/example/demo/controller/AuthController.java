@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.ApiResponse;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
@@ -31,10 +30,10 @@ public class AuthController {
 
     // ================= REGISTER =================
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<User>> register(
+    public ResponseEntity<User> register(
             @Valid @RequestBody AuthRequest request) {
 
-        // DTO → Entity mapping
+        // map AuthRequest → User
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
@@ -42,9 +41,7 @@ public class AuthController {
 
         User savedUser = userService.registerUser(user);
 
-        return ResponseEntity.ok(
-                new ApiResponse<>("User registered successfully", savedUser)
-        );
+        return ResponseEntity.ok(savedUser);
     }
 
     // ================= LOGIN =================
@@ -59,11 +56,16 @@ public class AuthController {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        // Generate JWT token
+        // generate JWT
         String token = jwtUtil.generateToken(user.getEmail());
 
-        return ResponseEntity.ok(
-                new AuthResponse(token, "Login successful")
+        AuthResponse response = new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
         );
+
+        return ResponseEntity.ok(response);
     }
 }
