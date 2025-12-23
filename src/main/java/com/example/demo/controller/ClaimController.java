@@ -21,7 +21,6 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-    // POST /api/claims/{policyId}
     @PostMapping("/{policyId}")
     public ResponseEntity<ClaimDto> createClaim(
             @PathVariable Long policyId,
@@ -37,7 +36,6 @@ public class ClaimController {
         return ResponseEntity.ok(mapToDto(saved));
     }
 
-    // GET /api/claims/{id}
     @GetMapping("/{id}")
     public ResponseEntity<ClaimDto> getClaim(@PathVariable Long id) {
         return ResponseEntity.ok(
@@ -45,7 +43,6 @@ public class ClaimController {
         );
     }
 
-    // GET /api/claims
     @GetMapping
     public ResponseEntity<List<ClaimDto>> getAllClaims() {
         return ResponseEntity.ok(
@@ -59,7 +56,6 @@ public class ClaimController {
     private ClaimDto mapToDto(Claim claim) {
         ClaimDto dto = new ClaimDto();
         dto.setId(claim.getId());
-        dto.setPolicyId(claim.getPolicy().getId());
         dto.setClaimDate(claim.getClaimDate());
         dto.setClaimAmount(claim.getClaimAmount());
         dto.setDescription(claim.getDescription());

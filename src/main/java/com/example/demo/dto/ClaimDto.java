@@ -12,10 +12,6 @@ public class ClaimDto {
     // Response only
     private Long id;
 
-    // Request / Response
-    //@NotNull(message = "Policy ID is required")
-    //private Long policyId;
-
     @NotNull(message = "Claim date is required")
     @PastOrPresent(message = "Claim date cannot be in the future")
     private LocalDate claimDate;
@@ -28,22 +24,11 @@ public class ClaimDto {
     @NotBlank(message = "Description is required")
     private String description;
 
-    // Response only (PENDING / APPROVED / REJECTED)
+    // Response only
     private String status;
 
     public ClaimDto() {
     }
-
-    public ClaimDto(Long id, LocalDate claimDate,
-                    Double claimAmount, String description, String status) {
-        this.id = id;
-        /*this.policyId = policyId;*/
-        this.claimDate = claimDate;
-        this.claimAmount = claimAmount;
-        this.description = description;
-        this.status = status;
-    }
-
     // -------- Getters & Setters --------
 
     public Long getId() {

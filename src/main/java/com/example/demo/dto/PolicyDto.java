@@ -10,10 +10,6 @@ public class PolicyDto {
     // Response only
     private Long id;
 
-    // Request / Response
-    //@NotNull(message = "User ID is required")
-    //private Long userId;
-
     @NotBlank(message = "Policy number is required")
     private String policyNumber;
 
@@ -32,13 +28,11 @@ public class PolicyDto {
     public PolicyDto(Long id, String policyNumber,
                      String policyType, LocalDate startDate, LocalDate endDate) {
         this.id = id;
-        /*this.userId = userId;*/
         this.policyNumber = policyNumber;
         this.policyType = policyType;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
     // -------- Getters & Setters --------
 
     public Long getId() {

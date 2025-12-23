@@ -34,28 +34,28 @@ public class PolicyController {
 
         Policy saved = policyService.createPolicy(userId, policy);
 
-        dto.setId(saved.getId());
-        dto.setUserId(userId);
-
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(mapToDto(saved));
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<PolicyDto>> getPoliciesByUser(
             @PathVariable Long userId) {
 
-        return ResponseEntity.ok(
-                policyService.getPoliciesByUser(userId)
-                        .stream()
-                        .map(p -> new PolicyDto(
-                                p.getId(),
-                                p.getUser().getId(),
-                                p.getPolicyNumber(),
-                                p.getPolicyType(),
-                                p.getStartDate(),
-                                p.getEndDate()
-                        ))
-                        .collect(Collectors.toList())
+        List<PolicyDto> list = policyService.getPoliciesByUser(userId)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(list);
+    }
+
+    private PolicyDto mapToDto(Policy policy) {
+        return new PolicyDto(
+                policy.getId(),
+                policy.getPolicyNumber(),
+                policy.getPolicyType(),
+                policy.getStartDate(),
+                policy.getEndDate()
         );
     }
 }
