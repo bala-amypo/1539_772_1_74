@@ -11,8 +11,8 @@ public class PolicyDto {
     private Long id;
 
     // Request / Response
-    @NotNull(message = "User ID is required")
-    private Long userId;
+    //@NotNull(message = "User ID is required")
+    //private Long userId;
 
     @NotBlank(message = "Policy number is required")
     private String policyNumber;
