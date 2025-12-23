@@ -29,7 +29,7 @@ public class PolicyDto {
     public PolicyDto() {
     }
 
-    public PolicyDto(Long id, /*Long userId*/, String policyNumber,
+    public PolicyDto(Long id, String policyNumber,
                      String policyType, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         /*this.userId = userId;*/

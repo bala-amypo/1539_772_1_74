@@ -34,7 +34,7 @@ public class ClaimDto {
     public ClaimDto() {
     }
 
-    public ClaimDto(Long id, /*Long policyId*/, LocalDate claimDate,
+    public ClaimDto(Long id, LocalDate claimDate,
                     Double claimAmount, String description, String status) {
         this.id = id;
         /*this.policyId = policyId;*/
