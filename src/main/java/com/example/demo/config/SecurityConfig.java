@@ -13,25 +13,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
-
+    // Password encoder bean
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    // Security filter chain
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
+            // Disable CSRF for REST APIs
             .csrf(csrf -> csrf.disable())
+            // Stateless session (JWT)
             .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/auth/register",
@@ -40,17 +41,16 @@ public class SecurityConfig {
                         "/v3/api-docs/**"
                 ).permitAll()
                 .requestMatchers("/api/**").authenticated()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             );
-
+        // Register JWT filter
         http.addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
         );
-
         return http.build();
     }
-
+    // Authentication manager
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
