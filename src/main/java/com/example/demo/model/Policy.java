@@ -34,7 +34,6 @@ public class Policy {
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Claim> claims;
 
     public Policy() {
