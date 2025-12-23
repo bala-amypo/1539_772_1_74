@@ -34,10 +34,10 @@ public class ClaimDto {
     public ClaimDto() {
     }
 
-    public ClaimDto(Long id, Long policyId, LocalDate claimDate,
+    public ClaimDto(Long id, /*Long policyId*/, LocalDate claimDate,
                     Double claimAmount, String description, String status) {
         this.id = id;
-        this.policyId = policyId;
+        /*this.policyId = policyId;*/
         this.claimDate = claimDate;
         this.claimAmount = claimAmount;
         this.description = description;
@@ -54,13 +54,13 @@ public class ClaimDto {
         this.id = id;
     }
 
-    public Long getPolicyId() {
+    /*public Long getPolicyId() {
         return policyId;
     }
  
     public void setPolicyId(Long policyId) {
         this.policyId = policyId;
-    }
+    }*/
 
     public LocalDate getClaimDate() {
         return claimDate;

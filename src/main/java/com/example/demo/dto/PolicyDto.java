@@ -49,13 +49,13 @@ public class PolicyDto {
         this.id = id;
     }
 
-    public Long getUserId() {
+    /*public Long getUserId() {
         return userId;
     }
  
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
+    }*/
 
     public String getPolicyNumber() {
         return policyNumber;
