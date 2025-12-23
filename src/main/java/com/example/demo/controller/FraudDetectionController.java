@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.FraudCheckResultDto;
 import com.example.demo.model.FraudCheckResult;
 import com.example.demo.service.FraudDetectionService;
 
@@ -15,16 +16,28 @@ public class FraudDetectionController {
     public FraudDetectionController(FraudDetectionService fraudDetectionService) {
         this.fraudDetectionService = fraudDetectionService;
     }
+
     @PostMapping("/evaluate/{claimId}")
-    public ResponseEntity<FraudCheckResult> evaluateClaim(@PathVariable Long claimId) {
+    public ResponseEntity<FraudCheckResultDto> evaluateClaim(@PathVariable Long claimId) {
         return ResponseEntity.ok(
-                fraudDetectionService.evaluateClaim(claimId)
+                mapToDto(fraudDetectionService.evaluateClaim(claimId))
         );
     }
+
     @GetMapping("/result/claim/{claimId}")
-    public ResponseEntity<FraudCheckResult> getResultByClaim(@PathVariable Long claimId) {
+    public ResponseEntity<FraudCheckResultDto> getResultByClaim(@PathVariable Long claimId) {
         return ResponseEntity.ok(
-                fraudDetectionService.getResultByClaim(claimId)
+                mapToDto(fraudDetectionService.getResultByClaim(claimId))
         );
+    }
+
+    private FraudCheckResultDto mapToDto(FraudCheckResult result) {
+        FraudCheckResultDto dto = new FraudCheckResultDto();
+        dto.setClaimId(result.getClaim().getId());
+        dto.setIsFraudulent(result.getIsFraudulent());
+        dto.setTriggeredRuleName(result.getTriggeredRuleName());
+        dto.setRejectionReason(result.getRejectionReason());
+        dto.setCheckedAt(result.getCheckedAt());
+        return dto;
     }
 }
