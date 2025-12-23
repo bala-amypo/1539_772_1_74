@@ -13,8 +13,8 @@ public class ClaimDto {
     private Long id;
 
     // Request / Response
-    @NotNull(message = "Policy ID is required")
-    private Long policyId;
+    //@NotNull(message = "Policy ID is required")
+    //private Long policyId;
 
     @NotNull(message = "Claim date is required")
     @PastOrPresent(message = "Claim date cannot be in the future")
