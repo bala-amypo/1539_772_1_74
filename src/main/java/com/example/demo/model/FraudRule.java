@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 @Entity
@@ -32,6 +32,7 @@ public class FraudRule {
     private String severity;
 
     @ManyToMany(mappedBy = "fraudRules")
+    @JsonIgnore
     private Set<Claim> claims;
 
     public FraudRule() {

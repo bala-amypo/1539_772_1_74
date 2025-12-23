@@ -11,6 +11,7 @@ public class FraudCheckResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "claim_id", nullable = false)
     private Claim claim;
 
