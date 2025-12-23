@@ -1,46 +1,23 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+public class ApiResponse<T> {
 
-public class AuthRequest {
+    private String message;
+    private T data;
 
-    // used only during registration
-    private String name;
-
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Email is required")
-    private String email;
-
-    @NotBlank(message = "Password is required")
-    private String password;
-
-    public AuthRequest() {
+    public ApiResponse() {
     }
 
-    // getters & setters
-
-    public String getName() {
-        return name;
+    public ApiResponse(String message, T data) {
+        this.message = message;
+        this.data = data;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getMessage() {
+        return message;
     }
 
-    public String getEmail() {
-        return email;
-    }
- 
-    public void setEmail(String email) {
-        this.email = email;
-    }
- 
-    public String getPassword() {
-        return password;
-    }
- 
-    public void setPassword(String password) {
-        this.password = password;
+    public T getData() {
+        return data;
     }
 }
