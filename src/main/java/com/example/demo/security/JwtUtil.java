@@ -28,7 +28,7 @@ public class JwtUtil {
         this.expirationMillis = expirationMillis;
     }
 
-    // ⭐ Main method expected by tests
+    // ⭐ Main version tests expect
     public String generateToken(Long userId, String email, String role) {
 
         return Jwts.builder()
@@ -44,17 +44,17 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 👉 Overload: generate token from User object
-    public String generateToken(com.example.demo.model.User user) {
+    // ✅ Explicit helper — avoids overload conflicts
+    public String generateTokenFromUser(com.example.demo.model.User user) {
         return generateToken(user.getId(), user.getEmail(), user.getRole());
     }
 
-    // 👉 Overload: email + role
+    // 👉 Email + role
     public String generateToken(String email, String role) {
         return generateToken(null, email, role);
     }
 
-    // 👉 Overload: email only
+    // 👉 Email only
     public String generateToken(String email) {
         return generateToken(null, email, null);
     }
