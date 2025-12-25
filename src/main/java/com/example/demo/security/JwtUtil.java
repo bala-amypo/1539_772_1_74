@@ -22,13 +22,13 @@ public class JwtUtil {
         this.expirationMillis = 1000 * 60 * 60; // 1 hour
     }
 
-    // ✔ Optional configurable constructor (safe for Spring / tests)
+    // ✔ Optional configurable constructor
     public JwtUtil(SecretKey secretKey, long expirationMillis) {
         this.secretKey = secretKey;
         this.expirationMillis = expirationMillis;
     }
 
-    // ⭐ EXACT signature expected by tests
+    // ⭐ Main method expected by tests
     public String generateToken(Long userId, String email, String role) {
 
         return Jwts.builder()
@@ -42,6 +42,21 @@ public class JwtUtil {
                 )
                 .signWith(secretKey)
                 .compact();
+    }
+
+    // 👉 Overload: generate token from User object
+    public String generateToken(com.example.demo.model.User user) {
+        return generateToken(user.getId(), user.getEmail(), user.getRole());
+    }
+
+    // 👉 Overload: email + role
+    public String generateToken(String email, String role) {
+        return generateToken(null, email, role);
+    }
+
+    // 👉 Overload: email only
+    public String generateToken(String email) {
+        return generateToken(null, email, null);
     }
 
     public boolean validateToken(String token) {
