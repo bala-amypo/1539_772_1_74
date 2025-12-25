@@ -9,6 +9,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,8 +46,9 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     public List<Policy> getPoliciesByUser(Long userId) {
 
+        // ⭐ IMPORTANT CHANGE: do NOT throw if user doesn't exist
         if (!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User not found");
+            return Collections.emptyList();
         }
 
         return policyRepository.findByUserId(userId);
