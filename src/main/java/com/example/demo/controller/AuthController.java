@@ -7,6 +7,7 @@ import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 
 import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,18 @@ public class AuthController {
 
     // ================= REGISTER =================
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(
+            @Valid @RequestBody AuthRequest request) {
+
+        // map AuthRequest → User
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
 
         User savedUser = userService.registerUser(user);
+
         return ResponseEntity.ok(savedUser);
     }
 
@@ -47,12 +57,12 @@ public class AuthController {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
+        // generate JWT
         String token = jwtUtil.generateToken(
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
+            user.getId(),
+            user.getEmail(),
+            user.getRole()
         );
-
         AuthResponse response = new AuthResponse(
                 token,
                 user.getId(),
