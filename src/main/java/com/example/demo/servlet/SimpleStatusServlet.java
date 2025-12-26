@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/status")
-public class SimpleStatusServlet extends HttpServlet {
+public class SimpleStatusServlet extends HttpServlet {d
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
