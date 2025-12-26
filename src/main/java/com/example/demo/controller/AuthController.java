@@ -67,7 +67,8 @@ public class AuthController {
                 token,
                 user.getId(),
                 user.getEmail(),
-                user.getRole()
+                user.getRole(),
+                "Login successful"
         );
 
         return ResponseEntity.ok(response);
