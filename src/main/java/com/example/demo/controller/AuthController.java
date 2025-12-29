@@ -27,7 +27,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // ================= REGISTER =================
+    
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
 
@@ -35,7 +35,7 @@ public class AuthController {
         return ResponseEntity.ok(savedUser);
     }
 
-    // ================= LOGIN =================
+    
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody AuthRequest request) {
